@@ -15,41 +15,22 @@ BOT_USERNAME = "SaulScript_Bot"
 bot = telebot.TeleBot(TOKEN)
 
 # ============= ХРАНЕНИЕ В ПЕРЕМЕННЫХ ПИТОНА =============
-# ВСЕ ДАННЫЕ ХРАНЯТСЯ ЗДЕСЬ - В САМОМ КОДЕ!
-
-# База скриптов (формат: "КЛЮЧ": {данные})
+# ============= БАЗА СКРИПТОВ =============
 SCRIPTS_DATABASE = {
-    # Пример скрипта (добавьте свои сюда)
-    "264EF0BD": {
+    "48791C56": {
         "game_name": "The forge",
         "url": "https://raw.githubusercontent.com/GiftStein1/pepehook-loader/refs/heads/main/loader.lua",
-        "description": "Ckpmrt для the forge",
+        "description": "+Без ключа\n+Без бана",
         "loadstring": 'loadstring(game:HttpGet("https://raw.githubusercontent.com/GiftStein1/pepehook-loader/refs/heads/main/loader.lua"))()',
         "date": "08.12.2025 18:34",
         "uses": 1
     },
-    # Добавьте другие скрипты ниже в таком же формате:
-    # "ДРУГОЙ_КЛЮЧ": {
-    #     "game_name": "Название игры",
-    #     "url": "https://...",
-    #     "description": "Описание",
-    #     "loadstring": 'loadstring(game:HttpGet("https://..."))()',
-    #     "date": "дата",
-    #     "uses": 0
-    # },
-    "757B96AA": {
+    
+    "48791C56": {
         "game_name": "Universal",
-        "url": "https://raw.githubusercontent.com/.../universal.lua",  # НУЖЕН РЕАЛЬНЫЙ URL
+        "url": "https://glot.io/snippets/h8id91ebrx/raw/supermanfly.lua",
         "description": "Fly с анимацией супер мена\n+без ключа\n+без бана",
-        "loadstring": 'loadstring(game:HttpGet("https://raw.githubusercontent.com/.../universal.lua"))()',  # НУЖЕН РЕАЛЬНЫЙ URL
-        "date": "10.12.2025 00:00",
-        "uses": 0
-    },
-    "757B96AA": {
-        "game_name": "Universal",
-        "url": "https://raw.githubusercontent.com/.../universal.lua",  # НУЖЕН РЕАЛЬНЫЙ URL
-        "description": "Fly с анимацией супер мена\n+без ключа\n+без бана",
-        "loadstring": 'loadstring(game:HttpGet("https://raw.githubusercontent.com/.../universal.lua"))()',  # НУЖЕН РЕАЛЬНЫЙ URL
+        "loadstring": 'loadstring(game:HttpGet("https://glot.io/snippets/h8id91ebrx/raw/supermanfly.lua"))()',  
         "date": "10.12.2025 00:00",
         "uses": 0
     }
