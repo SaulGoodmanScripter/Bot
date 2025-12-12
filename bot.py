@@ -17,7 +17,7 @@ bot = telebot.TeleBot(TOKEN)
 # ============= ХРАНЕНИЕ В ПЕРЕМЕННЫХ ПИТОНА =============
 # ============= БАЗА СКРИПТОВ =============
 SCRIPTS_DATABASE = {
-    "48791C56": {
+    "757B96AA": {
         "game_name": "The forge",
         "url": "https://raw.githubusercontent.com/GiftStein1/pepehook-loader/refs/heads/main/loader.lua",
         "description": "+Без ключа\n+Без бана",
