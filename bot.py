@@ -25,7 +25,7 @@ SCRIPTS_DATABASE = {
         "date": "08.12.2025 18:34",
         "uses": 1
     },
-    
+
     "48791C56": {
         "game_name": "Universal",
         "url": "https://glot.io/snippets/h8id91ebrx/raw/supermanfly.lua",
@@ -46,11 +46,11 @@ def save_backup():
     """Создает резервную копию базы (для восстановления)"""
     try:
         backup = json.dumps(SCRIPTS_DATABASE, ensure_ascii=False, indent=2)
-        
+
         # Можно сохранить в файл, если нужно
         # with open("backup.txt", "w", encoding="utf-8") as f:
         #     f.write(backup)
-        
+
         return backup
     except Exception as e:
         print(f"❌ Ошибка создания бэкапа: {e}")
@@ -60,7 +60,7 @@ def add_script_to_code(key, data):
     """Добавляет скрипт в базу (в памяти)"""
     SCRIPTS_DATABASE[key] = data
     print(f"✅ Скрипт {key} добавлен в базу")
-    
+
     # Авто-сохранение в файл (опционально)
     try:
         with open("scripts_backup.py", "w", encoding="utf-8") as f:
@@ -74,7 +74,7 @@ def database_management(message):
     if message.from_user.id != OWNER_ID:
         bot.send_message(message.chat.id, "❌ Только для создателя")
         return
-    
+
     markup = InlineKeyboardMarkup(row_width=2)
     markup.add(
         InlineKeyboardButton("📦 Экспорт базы", callback_data="export_db"),
@@ -82,7 +82,7 @@ def database_management(message):
         InlineKeyboardButton("📋 Показать все", callback_data="show_all_keys"),
         InlineKeyboardButton("🔄 Обновить код", callback_data="update_code")
     )
-    
+
     bot.send_message(
         message.chat.id,
         f"🗄 **Управление базой данных**\n\n"
@@ -96,7 +96,7 @@ def database_management(message):
 @bot.callback_query_handler(func=lambda call: call.data == "export_db")
 def export_database(call):
     backup = save_backup()
-    
+
     if backup:
         # Отправляем как файл
         bot.send_document(
@@ -104,7 +104,7 @@ def export_database(call):
             ("scripts_database.py", f"SCRIPTS_DATABASE = {backup}".encode('utf-8')),
             caption="📦 Экспорт базы данных\nПросто скопируйте этот код и замените в файле"
         )
-        
+
         # Также показываем первые 1000 символов для быстрого просмотра
         preview = backup[:500] + "..." if len(backup) > 500 else backup
         bot.send_message(
@@ -114,7 +114,7 @@ def export_database(call):
         )
     else:
         bot.send_message(call.message.chat.id, "❌ Ошибка экспорта")
-    
+
     bot.answer_callback_query(call.id)
 
 # Показать все ключи
@@ -124,9 +124,9 @@ def show_all_keys(call):
         bot.send_message(call.message.chat.id, "📭 База пуста")
         bot.answer_callback_query(call.id)
         return
-    
+
     keys_list = "\n".join([f"• `{key}` - {data['game_name']}" for key, data in SCRIPTS_DATABASE.items()])
-    
+
     bot.send_message(
         call.message.chat.id,
         f"🗝 **Все ключи в базе:**\n\n{keys_list}\n\n"
@@ -163,7 +163,7 @@ def start(message):
             script = SCRIPTS_DATABASE[key]
             # Увеличиваем счетчик использований
             script['uses'] = script.get('uses', 0) + 1
-            
+
             text = f"📌 {script['game_name']}\n\n"
             text += f"📝 Описание:\n{script['description']}\n\n"
             text += f"📥 Код для эксплоита:\n`{script['loadstring']}`\n\n"
@@ -275,14 +275,14 @@ def handle_text(message):
 @bot.callback_query_handler(func=lambda call: call.data.startswith('publish_'))
 def publish_script(call):
     user_id = call.data.replace('publish_', '')
-    
+
     if user_id not in temp_data:
         bot.answer_callback_query(call.id, "❌ Данные не найдены")
         return
-    
+
     data = temp_data[user_id]
     key = data['key']
-    
+
     # Добавляем в базу
     SCRIPTS_DATABASE[key] = {
         'game_name': data['game_name'],
@@ -292,24 +292,24 @@ def publish_script(call):
         'date': time.strftime("%d.%m.%Y %H:%M"),
         'uses': 0
     }
-    
+
     # Публикуем в канал
     post_text = f"📌 {data['game_name']} SCRIPT!\n{data['description']}\n\n"
     post_text += f"⚡️Гайд как скачать\n@saulGoodmanScript_Guides\n\n"
     post_text += f"🤖Получить ключ от Delta\nhttps://t.me/Saul_KeyBypass\n\n"
     post_text += f"❓️Как использовать\n1. Копируете код выше\n2. Вставляете в ваш эксплоит\n3. Нажимаете Execute\n\n"
     post_text += f"-- Больше скриптов: @SaulGoodmanScript\n🤝 Партнёр: @loriscript"
-    
+
     bot_link = f"https://t.me/{BOT_USERNAME}?start={key}"
     markup = InlineKeyboardMarkup()
     markup.add(InlineKeyboardButton("📥 Получить скрипт", url=bot_link))
-    
+
     try:
         if data.get('has_photo') and 'photo' in data:
             bot.send_photo(CHANNEL, photo=data['photo'], caption=post_text, reply_markup=markup)
         else:
             bot.send_message(CHANNEL, post_text, reply_markup=markup, disable_web_page_preview=True)
-        
+
         bot.send_message(
             call.message.chat.id,
             f"✅ Опубликовано и сохранено в базу!\n"
@@ -317,28 +317,28 @@ def publish_script(call):
             f"📊 Всего скриптов: {len(SCRIPTS_DATABASE)}",
             parse_mode="Markdown"
         )
-        
+
         # Очищаем временные данные
         if user_id in temp_data:
             del temp_data[user_id]
-            
+
     except Exception as e:
         bot.send_message(call.message.chat.id, f"❌ Ошибка: {str(e)}")
-    
+
     bot.answer_callback_query(call.id)
 
 # Просто сохранить в базу без публикации
 @bot.callback_query_handler(func=lambda call: call.data.startswith('save_'))
 def save_to_database(call):
     user_id = call.data.replace('save_', '')
-    
+
     if user_id not in temp_data:
         bot.answer_callback_query(call.id, "❌ Данные не найдены")
         return
-    
+
     data = temp_data[user_id]
     key = data['key']
-    
+
     # Добавляем в базу
     SCRIPTS_DATABASE[key] = {
         'game_name': data['game_name'],
@@ -348,7 +348,7 @@ def save_to_database(call):
         'date': time.strftime("%d.%m.%Y %H:%M"),
         'uses': 0
     }
-    
+
     bot.send_message(
         call.message.chat.id,
         f"💾 Сохранено в базу!\n"
@@ -361,11 +361,11 @@ def save_to_database(call):
         f"3. Отправить разработчику для обновления кода",
         parse_mode="Markdown"
     )
-    
+
     # Очищаем временные данные
     if user_id in temp_data:
         del temp_data[user_id]
-    
+
     bot.answer_callback_query(call.id)
 
 # ============= ЗАПУСК =============
@@ -377,4 +377,4 @@ print("=" * 50)
 try:
     bot.polling(none_stop=True, skip_pending=True)
 except Exception as e:
-    print(f"❌ Ошибка: {e}")
+    print(f"❌ Ошибка: {e}") 
