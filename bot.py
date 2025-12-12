@@ -37,8 +37,23 @@ SCRIPTS_DATABASE = {
     #     "date": "дата",
     #     "uses": 0
     # },
+    "757B96AA": {
+        "game_name": "Universal",
+        "url": "https://raw.githubusercontent.com/.../universal.lua",  # НУЖЕН РЕАЛЬНЫЙ URL
+        "description": "Fly с анимацией супер мена\n+без ключа\n+без бана",
+        "loadstring": 'loadstring(game:HttpGet("https://raw.githubusercontent.com/.../universal.lua"))()',  # НУЖЕН РЕАЛЬНЫЙ URL
+        "date": "10.12.2025 00:00",
+        "uses": 0
+    },
+    "757B96AA": {
+        "game_name": "Universal",
+        "url": "https://raw.githubusercontent.com/.../universal.lua",  # НУЖЕН РЕАЛЬНЫЙ URL
+        "description": "Fly с анимацией супер мена\n+без ключа\n+без бана",
+        "loadstring": 'loadstring(game:HttpGet("https://raw.githubusercontent.com/.../universal.lua"))()',  # НУЖЕН РЕАЛЬНЫЙ URL
+        "date": "10.12.2025 00:00",
+        "uses": 0
+    }
 }
-
 # Расписание (если нужно)
 SCHEDULE_DATABASE = []
 
