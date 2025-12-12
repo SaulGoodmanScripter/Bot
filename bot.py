@@ -45,6 +45,15 @@ SCRIPTS_DATABASE = {
         "date": "08.12.2025 18:34",
         "uses": 1
     },
+
+    "1DBAD8ED": {
+        "game_name": "99 nights in rhe forest ",
+        "url": "https://raw.githubusercontent.com/GEC0/gec/refs/heads/main/Gec.Loader",
+        "description": "+без ключа/n+без бана",
+        "loadstring": 'loadstring(game:HttpGet("https://raw.githubusercontent.com/GEC0/gec/refs/heads/main/Gec.Loader"))()',
+        "date": "11.12.2025 15:36",
+        "uses": 0
+     },
     "48791C56": {
         "game_name": "Universal",
         "url": "https://glot.io/snippets/h8id91ebrx/raw/supermanfly.lua",
