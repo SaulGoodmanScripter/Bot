@@ -8,7 +8,7 @@ import re
 import random
 
 # ============= НАСТРОЙКИ =============
-TOKEN = "8327750780:AAHo6Rn0wiAmN_sZNC1B13785Kg-LuSi-Oc"
+TOKEN = "8327750780:AAEbLwKxRPdTODVK4CZsSXmlr-Xp6aSG13M"
 OWNER_ID = 6397071501
 CHANNEL = "@SaulGoodmanScript"
 BOT_USERNAME = "SaulScript_Bot"
