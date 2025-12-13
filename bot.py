@@ -54,6 +54,14 @@ SCRIPTS_DATABASE = {
         "date": "11.12.2025 15:36",
         "uses": 0
      },
+    "E393D9B9": {
+        "game_name": "Grow a garden",
+        "url": "https://raw.githubusercontent.com/furik-hub/X-HUB/976fce839fc5eb9aea586081b4e98b94b538c9bd/source.lua",
+        "description": "+Без ключа\n+Без бана",
+        "loadstring": 'loadstring(game:HttpGet("https://raw.githubusercontent.com/furik-hub/X-HUB/976fce839fc5eb9aea586081b4e98b94b538c9bd/source.lua"))()',
+        "date": "13.12.2025 12:46",
+        "uses": 1
+    },
     "48791C56": {
         "game_name": "Universal",
         "url": "https://glot.io/snippets/h8id91ebrx/raw/supermanfly.lua",
