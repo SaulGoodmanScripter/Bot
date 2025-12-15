@@ -45,6 +45,14 @@ SCRIPTS_DATABASE = {
         "date": "08.12.2025 18:34",
         "uses": 1
     },
+    "757B96AA": {
+        "game_name": "The forge",
+        "url": "https://pastefy.app/67vPkIvz/raw",
+        "description": "+Без ключа\n+Без бана",
+        "loadstring": 'loadstring(game:HttpGet("https://pastefy.app/67vPkIvz/raw"))()',
+        "date": "08.12.2025 18:34",
+        "uses": 1
+    },
 
     "1DBAD8ED": {
         "game_name": "99 nights in rhe forest ",
@@ -106,11 +114,8 @@ def start(message):
             debug_log(f"📥 Использований: {script['uses']}")
             
             text = f"📌 {script['game_name']}\n\n"
-            text += f"📝 Описание:\n{script['description']}\n\n"
             text += f"📥 Код для эксплоита:\n`{script['loadstring']}`\n\n"
             text += f"🔗 URL: {script['url']}\n"
-            text += f"📅 Добавлен: {script['date']}\n"
-            text += f"👥 Скачали: {script['uses']} раз\n\n"
             text += "📢 Больше скриптов: @SaulGoodmanScript\n"
             text += "🤝 Партнёр: @loriscript"
 
