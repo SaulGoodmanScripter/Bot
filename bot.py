@@ -45,6 +45,14 @@ SCRIPTS_DATABASE = {
         "date": "08.12.2025 18:34",
         "uses": 1
     },
+    "D758B054": {
+        "game_name": "Grow a garden",
+        "url": "https://raw.githubusercontent.com/furik-hub/X-HUB/976fce839fc5eb9aea586081b4e98b94b538c9bd/source.lua",
+        "description": "+Без ключа\n+Без бана",
+        "loadstring": 'loadstring(game:HttpGet("https://raw.githubusercontent.com/furik-hub/X-HUB/976fce839fc5eb9aea586081b4e98b94b538c9bd/source.lua"))()',
+        "date": "08.12.2025 18:34",
+        "uses": 1
+    },
     "757B96AA": {
         "game_name": "The forge",
         "url": "https://pastefy.app/67vPkIvz/raw",
