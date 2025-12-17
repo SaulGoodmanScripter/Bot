@@ -7,6 +7,15 @@
     "date": "08.12.2025 18:34",
     "uses": 1
   },
+{
+  "FC1EF8E7": {
+    "game_name": "The Lost Front",
+    "url": "https://raw.githubusercontent.com/pubmain/sniper-bin/refs/heads/main/The%20Lost%20Front.luau",
+    "description": "+Без ключа\n+Без бана",
+    "loadstring": "loadstring(game:HttpGet("https://raw.githubusercontent.com/pubmain/sniper-bin/refs/heads/main/The%20Lost%20Front.luau"))()",
+    "date": "08.12.2025 18:34",
+    "uses": 1
+  },
   "757B96AA": {
     "game_name": "The forge",
     "url": "https://raw.githubusercontent.com/GiftStein1/pepehook-loader/refs/heads/main/loader.lua",
