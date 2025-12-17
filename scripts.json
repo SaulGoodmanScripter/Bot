@@ -11,7 +11,7 @@
     "game_name": "99 Nights In The Forest",
     "url": "https://raw.githubusercontent.com/caomod2077/Script/refs/heads/main/CandyFarmChristmas.lua",
     "description": "Скрипт для фарма рождественских коефет\n+Без ключа\n+Без бана",
-    "loadstring": "loadstring(game:HttpGet(\"https://raw.githubusercontent.com/caomod2077/Script/refs/heads/main/CandyFarmChristmas.lua"\))(),
+    "loadstring": "loadstring(game:HttpGet(\"https://raw.githubusercontent.com/caomod2077/Script/refs/heads/main/CandyFarmChristmas.lua"\))()",
     "date": "08.12.2025 18:34",
     "uses": 1
   },
