@@ -31,6 +31,15 @@
     "date": "13.12.2025 12:46",
     "uses": 1
   },
+{
+  "6DB16BD9": {
+    "game_name": "99 Nights In The Forest",
+    "url": "https://raw.githubusercontent.com/Kenniel123/99-Nights-in-the-Forest/refs/heads/main/99%20Nights%20in%20the%20Forest",
+    "description": "+С ключом\n+Без бана",
+    "loadstring": "loadstring(game:HttpGet("https://raw.githubusercontent.com/Kenniel123/99-Nights-in-the-Forest/refs/heads/main/99%20Nights%20in%20the%20Forest"))()",
+    "date": "08.12.2025 18:34",
+    "uses": 1
+  },
   "48791C56": {
     "game_name": "Universal",
     "url": "https://glot.io/snippets/h8id91ebrx/raw/supermanfly.lua",
