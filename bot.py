@@ -96,10 +96,7 @@ def start(message):
             debug_log(f"📥 Использований: {script['uses']}")
 
             text = f"📌 {script['game_name']}\n\n"
-            text += f"📥 Код для эксплоита:\n`{script['loadstring']}`\n\n"
-            text += f"🔗 URL: {script['url']}\n"
-            text += "📢 Больше скриптов: @SaulGoodmanScript\n"
-            text += "🤝 Партнёр: @loriscript"
+            text += f"📥 Код для эксплоита:\n```{script['loadstring']}```\n\n"
 
             markup = InlineKeyboardMarkup()
             markup.add(
