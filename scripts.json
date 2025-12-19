@@ -7,6 +7,14 @@
     "date": "08.12.2025 18:34",
     "uses": 1
   },
+"25E443DF": {
+    "game_name": "Caralog",
+    "url": "https://raw.githubusercontent.com/rolezeay/catalogavatarcreator/refs/heads/main/hmmm",
+    "description": "+Без ключа\n+Без бана",
+    "loadstring": "loadstring(game:HttpGet(\"https://raw.githubusercontent.com/rolezeay/catalogavatarcreator/refs/heads/main/hmmm \"))()",
+    "date": "08.12.2025 18:34",
+    "uses": 1
+  },
 "71D9BD67": {
     "game_name": "Steal a Brainrot",
     "url": "https://api.luarmor.net/files/v3/loaders/26a720688fde4907da845a1314a1ce5e.lua",
