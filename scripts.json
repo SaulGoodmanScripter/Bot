@@ -1,100 +1,3 @@
-{
-  "D758B054": {
-    "game_name": "Grow a garden",
-    "url": "https://raw.githubusercontent.com/furik-hub/X-HUB/976fce839fc5eb9aea586081b4e98b94b538c9bd/source.lua ",
-    "description": "+Без ключа\n+Без бана",
-    "loadstring": "loadstring(game:HttpGet(\"https://raw.githubusercontent.com/furik-hub/X-HUB/976fce839fc5eb9aea586081b4e98b94b538c9bd/source.lua \"))()",
-    "date": "08.12.2025 18:34",
-    "uses": 1
-  },
-"F53EC9D4": {
-    "game_name": "Violence District",
-    "url": "https://raw.githubusercontent.com/Roman34296589/SnapSanixHUB/refs/heads/main/SnapSanixHUB.lua",
-    "description": "+Без ключа\n+Без бана",
-    "loadstring": "loadstring(game:HttpGet(\"https://raw.githubusercontent.com/Roman34296589/SnapSanixHUB/refs/heads/main/SnapSanixHUB.lua \"))()",
-    "date": "08.12.2025 18:34",
-    "uses": 1
-  },
-"25E443DF": {
-    "game_name": "Caralog",
-    "url": "https://raw.githubusercontent.com/rolezeay/catalogavatarcreator/refs/heads/main/hmmm",
-    "description": "+Без ключа\n+Без бана",
-    "loadstring": "loadstring(game:HttpGet(\"https://raw.githubusercontent.com/rolezeay/catalogavatarcreator/refs/heads/main/hmmm \"))()",
-    "date": "08.12.2025 18:34",
-    "uses": 1
-  },
-"71D9BD67": {
-    "game_name": "Steal a Brainrot",
-    "url": "https://api.luarmor.net/files/v3/loaders/26a720688fde4907da845a1314a1ce5e.lua",
-    "description": "+Без ключа\n+Без бана",
-    "loadstring": "loadstring(game:HttpGet(\"https://api.luarmor.net/files/v3/loaders/26a720688fde4907da845a1314a1ce5e.lua \"))()",
-    "date": "08.12.2025 18:34",
-    "uses": 1
-  },
-"BDBCAF94": {
-    "game_name": "tower of hell",
-    "url": "https://gist.githubusercontent.com/chyfon3/fa3c7905e966ab114c5a18bac3a11f23/raw/b86bd19a49d939303ad33a648fdd8aebe519efdb/TowerOfhell.lua",
-    "description": "+Без ключа\n+Без бана",
-    "loadstring": "loadstring(game:HttpGet(\"https://gist.githubusercontent.com/chyfon3/fa3c7905e966ab114c5a18bac3a11f23/raw/b86bd19a49d939303ad33a648fdd8aebe519efdb/TowerOfhell.lua \"))()",
-    "date": "08.12.2025 18:34",
-    "uses": 1
-  },
-"6DB16BD9": {
-    "game_name": "99 Nights In The Forest",
-    "url": "https://raw.githubusercontent.com/Kenniel123/99-Nights-in-the-Forest/refs/heads/main/99%20Nights%20in%20the%20Forest",
-    "description": "+Без ключа\n+Без бана",
-    "loadstring": "loadstring(game:HttpGet(\"https://raw.githubusercontent.com/Kenniel123/99-Nights-in-the-Forest/refs/heads/main/99%20Nights%20in%20the%20Forest \"))()",
-    "date": "08.12.2025 18:34",
-    "uses": 1
-  },
-  "150F2B8E": {
-    "game_name": "99 Nights In The Forest",
-    "url": "https://raw.githubusercontent.com/caomod2077/Script/refs/heads/main/CandyFarmChristmas.lua ",
-    "description": "Скрипт для фарма рождественских конфет\n+Без ключа\n+Без бана",
-    "loadstring": "loadstring(game:HttpGet(\"https://raw.githubusercontent.com/caomod2077/Script/refs/heads/main/CandyFarmChristmas.lua \"))()",
-    "date": "08.12.2025 18:34",
-    "uses": 1
-  },
-  "6DB16BD9_1": {
-    "game_name": "99 Nights In The Forest",
-    "url": "https://raw.githubusercontent.com/Kenniel123/99-Nights-in-the-Forest/refs/heads/main/99%20Nights%20in%20the%20Forest ",
-    "description": "+Без ключа\n+Без бана",
-    "loadstring": "loadstring(game:HttpGet(\"https://raw.githubusercontent.com/Kenniel123/99-Nights-in-the-Forest/refs/heads/main/99%20Nights%20in%20the%20Forest \"))()",
-    "date": "08.12.2025 18:34",
-    "uses": 1
-  },
-  "9720C99D": {
-    "game_name": "Legends Of Speed",
-    "url": "https://raw.githubusercontent.com/SaulGoodmanScripter/Saul_games/refs/heads/main/LegendsOfSpeed ",
-    "description": "+Без ключа\n+Без бана",
-    "loadstring": "loadstring(game:HttpGet(\"https://raw.githubusercontent.com/SaulGoodmanScripter/Saul_games/refs/heads/main/LegendsOfSpeed \"))()",
-    "date": "08.12.2025 18:34",
-    "uses": 1
-  },
-  "FC1EF8E7": {
-    "game_name": "The Lost Front",
-    "url": "https://raw.githubusercontent.com/pubmain/sniper-bin/refs/heads/main/The%20Lost%20Front.luau ",
-    "description": "+Без ключа\n+Без бана",
-    "loadstring": "loadstring(game:HttpGet(\"https://raw.githubusercontent.com/pubmain/sniper-bin/refs/heads/main/The%20Lost%20Front.luau \"))()",
-    "date": "08.12.2025 18:34",
-    "uses": 1
-  },
-  "757B96AA": {
-    "game_name": "The forge",
-    "url": "https://raw.githubusercontent.com/GiftStein1/pepehook-loader/refs/heads/main/loader.lua ",
-    "description": "+Без ключа\n+Без бана",
-    "loadstring": "loadstring(game:HttpGet(\"https://raw.githubusercontent.com/GiftStein1/pepehook-loader/refs/heads/main/loader.lua \"))()",
-    "date": "08.12.2025 18:34",
-    "uses": 1
-  },
-  "1DBAD8ED": {
-    "game_name": "99 nights in rhe forest",
-    "url": "https://raw.githubusercontent.com/GEC0/gec/refs/heads/main/Gec.Loader ",
-    "description": "+без ключа\n+без бана",
-    "loadstring": "loadstring(game:HttpGet(\"https://raw.githubusercontent.com/GEC0/gec/refs/heads/main/Gec.Loader \"))()",
-    "date": "11.12.2025 15:36",
-    "uses": 0
-  },
   "E393D9B9": {
     "game_name": "Universal",
     "url": "https://pastefy.app/67vPkIvz/raw",
@@ -118,5 +21,13 @@
     "loadstring": "loadstring(game:HttpGet(\"https://glot.io/snippets/h8id91ebrx/raw/supermanfly.lua \"))()",
     "date": "10.12.2025 00:00",
     "uses": 0
+  },
+  "9C6CA1D2": {
+    "game_name": "99 Nights In The Forest",
+    "url": "https://raw.githubusercontent.com/wehibuyfgyuwe/99nights.github.io/refs/heads/main/ringta.lua",
+    "description": "+Без ключа\n+Без бана",
+    "loadstring": "loadstring(game:HttpGet(\"https://raw.githubusercontent.com/wehibuyfgyuwe/99nights.github.io/refs/heads/main/ringta.lua\"))()",
+    "date": "19.12.2025 17:29",
+    "uses": 1
   }
 }
