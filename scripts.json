@@ -7,6 +7,14 @@
     "date": "08.12.2025 18:34",
     "uses": 1
   },
+"71D9BD67": {
+    "game_name": "Steal a Brainrot",
+    "url": "https://api.luarmor.net/files/v3/loaders/26a720688fde4907da845a1314a1ce5e.lua",
+    "description": "+Без ключа\n+Без бана",
+    "loadstring": "loadstring(game:HttpGet(\"https://api.luarmor.net/files/v3/loaders/26a720688fde4907da845a1314a1ce5e.lua \"))()",
+    "date": "08.12.2025 18:34",
+    "uses": 1
+  },
 "BDBCAF94": {
     "game_name": "tower of hell",
     "url": "https://gist.githubusercontent.com/chyfon3/fa3c7905e966ab114c5a18bac3a11f23/raw/b86bd19a49d939303ad33a648fdd8aebe519efdb/TowerOfhell.lua",
