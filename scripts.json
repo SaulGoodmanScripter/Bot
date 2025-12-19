@@ -7,6 +7,14 @@
     "date": "08.12.2025 18:34",
     "uses": 1
   },
+"F53EC9D4": {
+    "game_name": "Violence District",
+    "url": "https://raw.githubusercontent.com/Roman34296589/SnapSanixHUB/refs/heads/main/SnapSanixHUB.lua",
+    "description": "+Без ключа\n+Без бана",
+    "loadstring": "loadstring(game:HttpGet(\"https://raw.githubusercontent.com/Roman34296589/SnapSanixHUB/refs/heads/main/SnapSanixHUB.lua \"))()",
+    "date": "08.12.2025 18:34",
+    "uses": 1
+  },
 "25E443DF": {
     "game_name": "Caralog",
     "url": "https://raw.githubusercontent.com/rolezeay/catalogavatarcreator/refs/heads/main/hmmm",
