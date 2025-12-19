@@ -59,7 +59,7 @@
     "game_name": "Universal",
     "url": "https://pastefy.app/67vPkIvz/raw",
     "description": "+Без ключа\n+Без бана",
-    "loadstring": "loadstring(game:HttpGet(\"https://pastefy.app/67vPkIvz/raw\ "))()",
+    "loadstring": "loadstring(game:HttpGet(\"https://pastefy.app/67vPkIvz/raw \"))()",
     "date": "13.12.2025 12:46",
     "uses": 1
   },
