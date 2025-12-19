@@ -7,6 +7,14 @@
     "date": "08.12.2025 18:34",
     "uses": 1
   },
+"BDBCAF94": {
+    "game_name": "tower of hell",
+    "url": "https://gist.githubusercontent.com/chyfon3/fa3c7905e966ab114c5a18bac3a11f23/raw/b86bd19a49d939303ad33a648fdd8aebe519efdb/TowerOfhell.lua",
+    "description": "+Без ключа\n+Без бана",
+    "loadstring": "loadstring(game:HttpGet(\"https://gist.githubusercontent.com/chyfon3/fa3c7905e966ab114c5a18bac3a11f23/raw/b86bd19a49d939303ad33a648fdd8aebe519efdb/TowerOfhell.lua \"))()",
+    "date": "08.12.2025 18:34",
+    "uses": 1
+  },
   "150F2B8E": {
     "game_name": "99 Nights In The Forest",
     "url": "https://raw.githubusercontent.com/caomod2077/Script/refs/heads/main/CandyFarmChristmas.lua ",
