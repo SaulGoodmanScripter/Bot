@@ -7,6 +7,14 @@
     "date": "08.12.2025 18:34",
     "uses": 1
   },
+   "37845173": {
+      "game_name": "99 nights in the forest",
+      "url": "https://raw.githubusercontent.com/SaulGoodmanScripter/Saul_games/refs/heads/main/day_and_diamond_farm",
+      "description": "+Без ключа \n+Без бана\n+Фарм дней и алмазов\n+Фарм новогодних конфет",
+      "loadstring": "loadstring(game:HttpGet(\"https://raw.githubusercontent.com/SaulGoodmanScripter/Saul_games/refs/heads/main/day_and_diamond_farm\"))()",
+      "date": "21.12.2025 16:02",
+      "uses": 1
+   },
   "9C6CA1D2": {
     "game_name": "99 Nights In The Forest",
     "url": "https://raw.githubusercontent.com/wehibuyfgyuwe/99nights.github.io/refs/heads/main/ringta.lua",
