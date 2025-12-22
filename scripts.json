@@ -7,6 +7,14 @@
     "date": "08.12.2025 18:34",
     "uses": 1
   },
+    "E346A342": {
+      "game_name": "Murder Mystery 2",
+      "url": "https://raw.githubusercontent.com/orialdev/VisionHub/refs/heads/main/main.lua",
+      "description": "+Без ключа\n+Без бана",
+      "loadstring": "loadstring(game:HttpGet(\"https://raw.githubusercontent.com/orialdev/VisionHub/refs/heads/main/main.lua\"))()",
+      "date": "22.12.2025 12:40",
+      "uses": 0
+   },
    "37845173": {
       "game_name": "99 nights in the forest",
       "url": "https://raw.githubusercontent.com/SaulGoodmanScripter/Saul_games/refs/heads/main/day_and_diamond_farm",
