@@ -386,9 +386,9 @@ def publish_script(call):
     # Публикуем в канал
     post_text = f"📌 {data['game_name']} SCRIPT!\n{data['description']}\n\n"
     post_text += f"⚡️Гайд как скачать\n@saulGoodmanScript_Guides\n\n"
-    post_text += f"🤖Получить ключ от Delta\nhttps://t.me/Saul_KeyBypass \n\n"
+    post_text += f"🤖Получить ключ от Delta\nhttps://keybypass.net/ \n\n"
     post_text += f"❓️Как использовать\n1. Копируете код выше\n2. Вставляете в ваш эксплоит\n3. Нажимаете Execute\n\n"
-    post_text += f"-- Больше скриптов: @SaulGoodmanScript\n🤝 Партнёр: @loriscript"
+    post_text += f" Больше скриптов: @SaulGoodmanScript\n🤝 Партнёр: @loriscript"
 
     bot_link = f"https://t.me/{BOT_USERNAME}?start={key}"
     markup = InlineKeyboardMarkup()
