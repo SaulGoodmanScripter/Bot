@@ -9,18 +9,17 @@ import random
 
 # ============= НАСТРОЙКИ =============
 
-# Получаем токен из окружения
+# Получаем токен из переменных окружения Bothost
 TOKEN = os.getenv('BOT_TOKEN')
 
 # Проверяем, что токен загрузился
 if not TOKEN:
     print("=" * 50)
-    print("❌ ОШИБКА: Не найден BOT_TOKEN в переменных окружения!")
-    exit(1)  # Останавливаем бота
+    print("❌ ОШИБКА: Не найден BOT_TOKEN в переменных окружения Bothost!")
+    print("✅ Убедитесь, что в настройках бота есть переменная BOT_TOKEN")
+    exit(1)
 
-# Если токен есть, показываем часть для проверки
-print(f"✅ Токен загружен! Начинается на: {TOKEN[:15]}...")
-print(f"📏 Длина токена: {len(TOKEN)} символов")
+print(f"✅ Токен загружен с Bothost! Начинается на: {TOKEN[:15]}...")
 
 OWNER_ID = 6397071501
 CHANNEL = "@SaulGoodmanScript"
@@ -28,26 +27,23 @@ BOT_USERNAME = "SaulScript_Bot"
 
 bot = telebot.TeleBot(TOKEN)
 
-# ============= РАБОТА С JSON =============
+# ============= ДИНАМИЧЕСКАЯ ЗАГРУЗКА JSON =============
 
-def load_scripts():
-    """Загружает скрипты из JSON файла"""
+def load_scripts_dynamic():
+    """ВСЕГДА загружает свежую версию из файла"""
     try:
-        with open('scripts.json', 'r', encoding='utf-8') as f:
-            return json.load(f)
-    except FileNotFoundError:
-        print("⚠️ Файл scripts.json не найден, создаём новый...")
-        default_scripts = {}
-        save_scripts(default_scripts)
-        return default_scripts
-    except json.JSONDecodeError:
-        print("❌ Ошибка чтения JSON, создаём новый файл...")
-        default_scripts = {}
-        save_scripts(default_scripts)
-        return default_scripts
+        if os.path.exists('scripts.json'):
+            with open('scripts.json', 'r', encoding='utf-8') as f:
+                data = json.load(f)
+            return data
+        else:
+            return {}
+    except Exception as e:
+        print(f"❌ Ошибка загрузки JSON: {e}")
+        return {}
 
-def save_scripts(data):
-    """Сохраняет скрипты в JSON файл"""
+def save_scripts_dynamic(data):
+    """Сохраняет скрипты и возвращает обновленные данные"""
     try:
         with open('scripts.json', 'w', encoding='utf-8') as f:
             json.dump(data, f, ensure_ascii=False, indent=2)
@@ -56,38 +52,27 @@ def save_scripts(data):
         print(f"❌ Ошибка сохранения: {e}")
         return False
 
-# Загружаем базу скриптов
-SCRIPTS_DATABASE = load_scripts()
+# ============= ИСПРАВЛЕННЫЙ СТАРТ =============
 
-# ============= ОТЛАДКА =============
-def debug_log(message):
-    """Логирование для отладки"""
-    print(f"[DEBUG] {time.strftime('%H:%M:%S')} - {message}")
-
-# ============= СТАРТ С ПОДРОБНОЙ ОТЛАДКОЙ =============
 @bot.message_handler(commands=['start'])
 def start(message):
+    # ВСЕГДА загружаем свежие данные
+    SCRIPTS_DATABASE = load_scripts_dynamic()
+    
     args = message.text.split()
 
     if len(args) > 1:
         key = args[1].upper()
-
-        # ОТЛАДКА: выводим все данные
-        debug_log("=" * 60)
-        debug_log(f"🔑 ЗАПРОШЕН КЛЮЧ: {key}")
-        debug_log(f"📊 ВСЕ КЛЮЧИ В БАЗЕ: {list(SCRIPTS_DATABASE.keys())}")
-        debug_log(f"📱 User ID: {message.from_user.id}")
-        debug_log(f"📝 Полный текст: {message.text}")
+        
+        print(f"🔑 Запрос ключа: {key}")
+        print(f"📊 Доступно ключей: {list(SCRIPTS_DATABASE.keys())}")
 
         if key in SCRIPTS_DATABASE:
             script = SCRIPTS_DATABASE[key]
             script['uses'] = script.get('uses', 0) + 1
-
-            # Автосохранение при изменении
-            save_scripts(SCRIPTS_DATABASE)
-
-            debug_log(f"✅ КЛЮЧ НАЙДЕН: {script['game_name']}")
-            debug_log(f"📥 Использований: {script['uses']}")
+            
+            # Сохраняем обновленные данные
+            save_scripts_dynamic(SCRIPTS_DATABASE)
 
             text = f"📌 {script['game_name']}\n\n"
             text += f"📥 Код для эксплоита:\n`{script['loadstring']}`\n\n"
@@ -98,39 +83,29 @@ def start(message):
                 InlineKeyboardButton("🤝 Партнёр", url="https://t.me/loriscript")
             )
 
-            try:
-                bot.send_message(message.chat.id, text, reply_markup=markup, parse_mode="Markdown")
-                debug_log(f"✅ Сообщение отправлено пользователю {message.from_user.id}")
-            except Exception as e:
-                debug_log(f"❌ Ошибка отправки: {e}")
-                bot.send_message(message.chat.id, "❌ Ошибка отправки скрипта")
+            bot.send_message(message.chat.id, text, reply_markup=markup, parse_mode="Markdown")
         else:
-            debug_log(f"❌ КЛЮЧ НЕ НАЙДЕН В БАЗЕ!")
-
-            # Подробное сообщение об ошибке для отладки
-            error_msg = f"❌ Скрипт не найден!\n\n"
-            error_msg += f"🔑 Запрошенный ключ: `{key}`\n"
-            error_msg += f"📦 Доступные ключи:\n"
-            for k in SCRIPTS_DATABASE.keys():
-                error_msg += f"• `{k}` - {SCRIPTS_DATABASE[k]['game_name']}\n"
-
-            # Только владельцу показываем полную отладку
-            if message.from_user.id == OWNER_ID:
-                error_msg += f"\n📊 Debug info:\n"
-                error_msg += f"• Всего скриптов: {len(SCRIPTS_DATABASE)}\n"
-                error_msg += f"• База: {SCRIPTS_DATABASE}"
-
-            bot.send_message(message.chat.id, error_msg, parse_mode="Markdown")
+            bot.send_message(
+                message.chat.id,
+                f"❌ Скрипт не найден!\n\n"
+                f"🔑 Ключ: `{key}`\n"
+                f"📦 Всего скриптов: {len(SCRIPTS_DATABASE)}\n"
+                f"📋 Ключи: {', '.join(SCRIPTS_DATABASE.keys()[:5])}...",
+                parse_mode="Markdown"
+            )
         return
 
     # Обычный старт без ключа
+    SCRIPTS_DATABASE = load_scripts_dynamic()
+    
     if message.from_user.id == OWNER_ID:
+        total_uses = sum(s.get('uses', 0) for s in SCRIPTS_DATABASE.values())
         bot.send_message(
             message.chat.id,
             f"👑 Создатель SaulGoodmanScript\n\n"
             f"📊 Статистика:\n"
             f"• Скриптов в базе: {len(SCRIPTS_DATABASE)}\n"
-            f"• Всего скачиваний: {sum(s.get('uses', 0) for s in SCRIPTS_DATABASE.values())}\n\n"
+            f"• Всего скачиваний: {total_uses}\n\n"
             f"Отправь фото (если нужно) и текст в формате:\n\n"
             f"Название игры\n---\nURL\n---\nОписание через +"
         )
@@ -142,12 +117,16 @@ def start(message):
             f"📦 Доступно скриптов: {len(SCRIPTS_DATABASE)}"
         )
 
-# ============= КОМАНДА ДЛЯ ПРОВЕРКИ =============
+# ============= ИСПРАВЛЕННАЯ КОМАНДА CHECK =============
+
 @bot.message_handler(commands=['check'])
 def check_key_command(message):
     if message.from_user.id != OWNER_ID:
         return
 
+    # ВСЕГДА загружаем свежие данные
+    SCRIPTS_DATABASE = load_scripts_dynamic()
+    
     args = message.text.split()
     if len(args) > 1:
         key = args[1].upper()
@@ -171,7 +150,7 @@ def check_key_command(message):
             bot.send_message(
                 message.chat.id,
                 f"❌ Ключ `{key}` не найден!\n\n"
-                f"Доступные ключи: {', '.join(SCRIPTS_DATABASE.keys())}",
+                f"Доступные ключи: {', '.join(SCRIPTS_DATABASE.keys()[:10])}...",
                 parse_mode="Markdown"
             )
     else:
@@ -183,61 +162,25 @@ def check_key_command(message):
             parse_mode="Markdown"
         )
 
-# ============= КОМАНДА ДЛЯ ЭКСПОРТА =============
-@bot.message_handler(commands=['export'])
-def export_database_command(message):
-    if message.from_user.id != OWNER_ID:
-        return
+# ============= ДОБАВЛЕНИЕ СКРИПТОВ (исправлено) =============
 
-    try:
-        backup = json.dumps(SCRIPTS_DATABASE, ensure_ascii=False, indent=2)
+temp_data = {}
 
-        # Отправляем как файл
-        bot.send_document(
-            message.chat.id,
-            ("scripts.json", backup.encode('utf-8')),
-            caption="📦 Экспорт базы данных"
-        )
+def generate_unique_key(game_name):
+    """Генерирует уникальный ключ"""
+    # Загружаем текущую базу
+    SCRIPTS_DATABASE = load_scripts_dynamic()
+    
+    for attempt in range(10):
+        unique_data = f"{game_name}{time.time()}{random.randint(1000, 999999)}"
+        key = hashlib.md5(unique_data.encode()).hexdigest()[:8].upper()
 
-        # Также показываем в сообщении
-        preview = backup[:500] + "..." if len(backup) > 500 else backup
-        bot.send_message(
-            message.chat.id,
-            f"📋 **Превью базы:**\n```json\n{preview}\n```",
-            parse_mode="Markdown"
-        )
-    except Exception as e:
-        bot.send_message(message.chat.id, f"❌ Ошибка экспорта: {e}")
+        if key not in SCRIPTS_DATABASE:
+            return key
+    
+    # Fallback
+    return hashlib.md5(f"{game_name}{time.time()}{random.random()}".encode()).hexdigest()[:8].upper()
 
-# ============= КОМАНДА ДЛЯ ИМПОРТА =============
-@bot.message_handler(content_types=['document'])
-def import_database_command(message):
-    if message.from_user.id != OWNER_ID:
-        return
-
-    file_info = bot.get_file(message.document.file_id)
-    downloaded_file = bot.download_file(file_info.file_path)
-
-    try:
-        new_data = json.loads(downloaded_file.decode('utf-8'))
-        
-        # Проверяем, что это словарь
-        if isinstance(new_data, dict):
-            global SCRIPTS_DATABASE
-            SCRIPTS_DATABASE = new_data
-            save_scripts(SCRIPTS_DATABASE)
-            
-            bot.send_message(
-                message.chat.id,
-                f"✅ База данных импортирована!\n"
-                f"📊 Скриптов в базе: {len(SCRIPTS_DATABASE)}"
-            )
-        else:
-            bot.send_message(message.chat.id, "❌ Неверный формат файла")
-    except Exception as e:
-        bot.send_message(message.chat.id, f"❌ Ошибка импорта: {e}")
-
-# ============= ДОБАВЛЕНИЕ НОВЫХ СКРИПТОВ =============
 @bot.message_handler(content_types=['photo'])
 def handle_photo(message):
     if message.from_user.id != OWNER_ID:
@@ -250,17 +193,16 @@ def handle_photo(message):
     temp_data[user_id]['photo'] = message.photo[-1].file_id
     bot.reply_to(message, "✅ Фото сохранено! Теперь отправь текст.")
 
-# Временные данные в оперативке (теряются при перезагрузке)
-temp_data = {}
-
 @bot.message_handler(content_types=['text'])
 def handle_text(message):
     if message.from_user.id != OWNER_ID:
         return
 
+    # Загружаем актуальную базу
+    SCRIPTS_DATABASE = load_scripts_dynamic()
+    
     user_id = str(message.from_user.id)
 
-    # Проверяем, что это не команда
     if message.text.startswith('/'):
         return
 
@@ -277,7 +219,7 @@ def handle_text(message):
         bot.send_message(message.chat.id, "❌ Неверный URL")
         return
 
-    # Генерируем ключ с проверкой уникальности
+    # Генерируем ключ с проверкой в ТЕКУЩЕЙ базе
     key = generate_unique_key(game_name)
     loadstring = f'loadstring(game:HttpGet("{url}"))()'
 
@@ -293,7 +235,6 @@ def handle_text(message):
         'has_photo': 'photo' in temp_data[user_id]
     })
 
-    # Показываем меню публикации
     markup = InlineKeyboardMarkup(row_width=2)
     markup.add(
         InlineKeyboardButton("👁️ Предпросмотр", callback_data=f"preview_{user_id}"),
@@ -306,7 +247,8 @@ def handle_text(message):
         f"✅ Данные получены!\n"
         f"🎮 Игра: {game_name}\n"
         f"🔑 Ключ: `{key}`\n"
-        f"📷 Фото: {'Да' if 'photo' in temp_data[user_id] else 'Нет'}\n\n"
+        f"📷 Фото: {'Да' if 'photo' in temp_data[user_id] else 'Нет'}\n"
+        f"📊 Текущее кол-во скриптов: {len(SCRIPTS_DATABASE)}\n\n"
         f"Выберите действие:",
         reply_markup=markup,
         parse_mode="Markdown"
@@ -314,51 +256,6 @@ def handle_text(message):
 
 # ============= CALLBACK HANDLERS =============
 
-@bot.callback_query_handler(func=lambda call: call.data.startswith('preview_'))
-def preview_script(call):
-    user_id = call.data.replace('preview_', '')
-
-    if user_id not in temp_data:
-        bot.answer_callback_query(call.id, "❌ Данные не найдены")
-        return
-
-    data = temp_data[user_id]
-    key = data['key']
-    
-    # Показываем предпросмотр
-    preview_text = f"🎮 Игра: {data['game_name']}\n"
-    preview_text += f"🔑 Ключ: `{key}`\n"
-    preview_text += f"🔗 URL: {data['url']}\n"
-    preview_text += f"📝 Описание:\n{data['description']}\n"
-    preview_text += f"📥 Loadstring:\n`{data['loadstring']}`"
-    
-    bot.send_message(
-        call.message.chat.id,
-        f"👁️ **Предпросмотр**:\n\n{preview_text}",
-        parse_mode="Markdown"
-    )
-    
-    bot.answer_callback_query(call.id)
-
-# Генерация уникального ключа
-def generate_unique_key(game_name):
-    """Генерирует гарантированно уникальный ключ"""
-    for attempt in range(10):
-        # Добавляем случайные данные для уникальности
-        unique_data = f"{game_name}{time.time()}{random.randint(1000, 999999)}"
-        key = hashlib.md5(unique_data.encode()).hexdigest()[:8].upper()
-
-        # Проверяем, нет ли такого ключа уже в базе
-        if key not in SCRIPTS_DATABASE:
-            debug_log(f"🔑 Сгенерирован уникальный ключ: {key}")
-            return key
-
-    # Если не удалось за 10 попыток, добавляем дополнительную случайность
-    fallback_key = hashlib.md5(f"{game_name}{time.time()}{random.random()}".encode()).hexdigest()[:8].upper()
-    debug_log(f"⚠️ Использован fallback ключ: {fallback_key}")
-    return fallback_key
-
-# Опубликовать пост
 @bot.callback_query_handler(func=lambda call: call.data.startswith('publish_'))
 def publish_script(call):
     user_id = call.data.replace('publish_', '')
@@ -370,6 +267,9 @@ def publish_script(call):
     data = temp_data[user_id]
     key = data['key']
 
+    # Загружаем текущую базу
+    SCRIPTS_DATABASE = load_scripts_dynamic()
+    
     # Добавляем в базу
     SCRIPTS_DATABASE[key] = {
         'game_name': data['game_name'],
@@ -381,7 +281,7 @@ def publish_script(call):
     }
 
     # Сохраняем в JSON
-    save_scripts(SCRIPTS_DATABASE)
+    save_scripts_dynamic(SCRIPTS_DATABASE)
 
     # Публикуем в канал
     post_text = f"📌 {data['game_name']} SCRIPT!\n{data['description']}\n\n"
@@ -418,54 +318,10 @@ def publish_script(call):
 
     bot.answer_callback_query(call.id)
 
-# Просто сохранить в базу без публикации
-@bot.callback_query_handler(func=lambda call: call.data.startswith('save_'))
-def save_to_database(call):
-    user_id = call.data.replace('save_', '')
+# ============= ЗАПУСК БОТА =============
 
-    if user_id not in temp_data:
-        bot.answer_callback_query(call.id, "❌ Данные не найдены")
-        return
-
-    data = temp_data[user_id]
-    key = data['key']
-
-    # Добавляем в базу
-    SCRIPTS_DATABASE[key] = {
-        'game_name': data['game_name'],
-        'url': data['url'],
-        'description': data['description'],
-        'loadstring': data['loadstring'],
-        'date': time.strftime("%d.%m.%Y %H:%M"),
-        'uses': 0
-    }
-
-    # Сохраняем в JSON
-    save_scripts(SCRIPTS_DATABASE)
-
-    bot_link = f"https://t.me/{BOT_USERNAME}?start={key}"
-
-    bot.send_message(
-        call.message.chat.id,
-        f"💾 Сохранено в базу!\n"
-        f"🔑 Ключ: `{key}`\n"
-        f"🎮 Игра: {data['game_name']}\n"
-        f"📊 Всего скриптов: {len(SCRIPTS_DATABASE)}\n\n"
-        f"Тестовая ссылка: {bot_link}",
-        parse_mode="Markdown"
-    )
-
-    # Очищаем временные данные
-    if user_id in temp_data:
-        del temp_data[user_id]
-
-    bot.answer_callback_query(call.id)
-
-# ============= ЗАПУСК =============
 print("=" * 50)
-print("🤖 Бот запущен!")
-print(f"📦 Скриптов в базе: {len(SCRIPTS_DATABASE)}")
-print(f"🔑 Ключи: {', '.join(list(SCRIPTS_DATABASE.keys())[:5])}...")  # Показываем первые 5
+print("🤖 Бот запущен на Bothost!")
 print("=" * 50)
 
 try:
