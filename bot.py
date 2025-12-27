@@ -12,7 +12,7 @@ TOKEN = os.getenv('BOT_TOKEN')
 OWNER_ID = 6397071501
 CHANNEL = "@SaulGoodmanScript"
 BOT_USERNAME = "SaulScript_Bot"
-WEBSITE_URL = "https://ваш-сайт.com"  # Замените на ваш домен
+WEBSITE_URL = "http://m93985iy.beget.tech/"  # Замените на ваш домен
 
 bot = telebot.TeleBot(TOKEN)
 
