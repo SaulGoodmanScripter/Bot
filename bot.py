@@ -1,5 +1,5 @@
 import telebot
-from telebot.types import InlineKeyboardMarkup, InlineKeyboardButton, LabeledPrice
+from telebot.types import InlineKeyboardMarkup, InlineKeyboardButton
 import json
 import time
 import hashlib
@@ -15,7 +15,7 @@ TOKEN = os.getenv('BOT_TOKEN')
 # Проверяем, что токен загрузился
 if not TOKEN:
     print("=" * 50)
-    print("❌ ОШИБКА: Не найден BOT_TOKEN в переменных окружении Bothost!")
+    print("❌ ОШИБКА: Не найден BOT_TOKEN в переменных окружения Bothost!")
     print("✅ Убедитесь, что в настройках бота есть переменная BOT_TOKEN")
     exit(1)
 
@@ -27,214 +27,32 @@ BOT_USERNAME = "SaulScript_Bot"
 
 bot = telebot.TeleBot(TOKEN)
 
-# ============= КОНФИГУРАЦИЯ ДОНАТОВ =============
+# ============= ДИНАМИЧЕСКАЯ ЗАГРУЗКА JSON =============
 
-# Цены в Telegram Stars (1 Star = $0.01)
-STARS_PACKAGES = {
-    "10": 10,     # 10 stars
-    "25": 25,     # 25 stars
-    "50": 50,     # 50 stars
-    "100": 100,   # 100 stars
-    "250": 250,   # 250 stars
-    "500": 500,   # 500 stars
-}
-
-# Описания пакетов
-STARS_DESCRIPTIONS = {
-    "10": "10 ⭐ - Базовая поддержка",
-    "25": "25 ⭐ - Небольшой донат",
-    "50": "50 ⭐ - Средний донат",
-    "100": "100 ⭐ - Значительная помощь",
-    "250": "250 ⭐ - Большой донат",
-    "500": "500 ⭐ - Максимальная поддержка",
-}
-
-# ============= КОМАНДА ДОНАТ =============
-
-@bot.message_handler(commands=['donate', 'donates', 'stars'])
-def donate_command(message):
-    """Показывает меню донатов"""
-    markup = InlineKeyboardMarkup(row_width=2)
-    
-    # Создаем кнопки для выбора количества звезд
-    buttons = []
-    for stars in STARS_PACKAGES.keys():
-        buttons.append(
-            InlineKeyboardButton(
-                f"{stars} ⭐", 
-                callback_data=f"donate_{stars}"
-            )
-        )
-    
-    # Добавляем кнопки в два столбца
-    for i in range(0, len(buttons), 2):
-        if i+1 < len(buttons):
-            markup.row(buttons[i], buttons[i+1])
+def load_scripts_dynamic():
+    """ВСЕГДА загружает свежую версию из файла"""
+    try:
+        if os.path.exists('scripts.json'):
+            with open('scripts.json', 'r', encoding='utf-8') as f:
+                data = json.load(f)
+            return data
         else:
-            markup.row(buttons[i])
-    
-    # Кнопка "Другой размер"
-    markup.row(InlineKeyboardButton("🎁 Другой размер", callback_data="donate_custom"))
-    
-    bot.send_message(
-        message.chat.id,
-        "🌟 **Поддержать разработчика**\n\n"
-        "Выберите количество звезд для доната:\n"
-        "• 10 ⭐ - Базовая поддержка\n"
-        "• 25 ⭐ - Небольшой донат\n"
-        "• 50 ⭐ - Средний донат\n"
-        "• 100 ⭐ - Значительная помощь\n"
-        "• 250 ⭐ - Большой донат\n"
-        "• 500 ⭐ - Максимальная поддержка\n\n"
-        "💫 Каждая звезда помогает развитию бота!",
-        reply_markup=markup,
-        parse_mode="Markdown"
-    )
-
-# ============= ОБРАБОТКА ВЫБОРА ДОНАТА =============
-
-@bot.callback_query_handler(func=lambda call: call.data.startswith('donate_'))
-def handle_donate_selection(call):
-    """Обрабатывает выбор количества звезд"""
-    if call.data == "donate_custom":
-        # Запрос произвольной суммы
-        msg = bot.send_message(
-            call.message.chat.id,
-            "💫 Введите произвольное количество звезд (от 10 до 1000):"
-        )
-        bot.register_next_step_handler(msg, process_custom_donate)
-        bot.answer_callback_query(call.id)
-        return
-    
-    stars_amount = call.data.replace('donate_', '')
-    
-    if stars_amount not in STARS_PACKAGES:
-        bot.answer_callback_query(call.id, "❌ Неверный выбор")
-        return
-    
-    stars_count = STARS_PACKAGES[stars_amount]
-    description = STARS_DESCRIPTIONS.get(stars_amount, f"{stars_amount} звезд")
-    
-    # Создаем инвойс для Telegram Stars
-    try:
-        prices = [LabeledPrice(label=f"{stars_amount} Telegram Stars", amount=stars_count)]
-        
-        bot.send_invoice(
-            chat_id=call.message.chat.id,
-            title=f"Донат {stars_amount} ⭐",
-            description=description,
-            invoice_payload=f"donate_{stars_amount}_{call.from_user.id}",
-            provider_token="",  # Для Telegram Stars оставляем пустым
-            currency="XTR",  # Код валюты для Telegram Stars
-            prices=prices,
-            start_parameter="donate",
-            photo_url="https://raw.githubusercontent.com/telegramdesktop/tdesktop/dev/Telegram/Resources/art/icon256.png",
-            photo_size=100,
-            photo_width=256,
-            photo_height=256,
-            need_name=False,
-            need_phone_number=False,
-            need_email=False,
-            need_shipping_address=False,
-            is_flexible=False
-        )
+            return {}
     except Exception as e:
-        bot.send_message(
-            call.message.chat.id,
-            f"❌ Ошибка при создании платежа: {str(e)}"
-        )
-    
-    bot.answer_callback_query(call.id)
+        print(f"❌ Ошибка загрузки JSON: {e}")
+        return {}
 
-def process_custom_donate(message):
-    """Обрабатывает произвольную сумму доната"""
+def save_scripts_dynamic(data):
+    """Сохраняет скрипты и возвращает обновленные данные"""
     try:
-        stars = int(message.text.strip())
-        
-        if stars < 10:
-            bot.send_message(message.chat.id, "❌ Минимальное количество звезд - 10")
-            return
-        if stars > 1000:
-            bot.send_message(message.chat.id, "❌ Максимальное количество звезд - 1000")
-            return
-        
-        # Создаем инвойс для произвольной суммы
-        prices = [LabeledPrice(label=f"{stars} Telegram Stars", amount=stars)]
-        
-        bot.send_invoice(
-            chat_id=message.chat.id,
-            title=f"Донат {stars} ⭐",
-            description=f"Произвольный донат {stars} звезд",
-            invoice_payload=f"donate_custom_{stars}_{message.from_user.id}",
-            provider_token="",
-            currency="XTR",
-            prices=prices,
-            start_parameter="donate_custom",
-            photo_url="https://raw.githubusercontent.com/telegramdesktop/tdesktop/dev/Telegram/Resources/art/icon256.png",
-            photo_size=100,
-            photo_width=256,
-            photo_height=256,
-            need_name=False,
-            need_phone_number=False,
-            need_email=False,
-            need_shipping_address=False,
-            is_flexible=False
-        )
-        
-    except ValueError:
-        bot.send_message(message.chat.id, "❌ Пожалуйста, введите число")
+        with open('scripts.json', 'w', encoding='utf-8') as f:
+            json.dump(data, f, ensure_ascii=False, indent=2)
+        return True
     except Exception as e:
-        bot.send_message(message.chat.id, f"❌ Ошибка: {str(e)}")
+        print(f"❌ Ошибка сохранения: {e}")
+        return False
 
-# ============= ОБРАБОТКА УСПЕШНОГО ПЛАТЕЖА =============
-
-@bot.pre_checkout_query_handler(func=lambda query: True)
-def process_pre_checkout_query(pre_checkout_query):
-    """Обрабатывает предварительный запрос на оплату"""
-    bot.answer_pre_checkout_query(pre_checkout_query.id, ok=True)
-
-@bot.message_handler(content_types=['successful_payment'])
-def process_successful_payment(message):
-    """Обрабатывает успешный платеж"""
-    try:
-        payload = message.successful_payment.invoice_payload
-        user_id = message.from_user.id
-        stars_amount = 0
-        
-        # Извлекаем количество звезд из payload
-        if payload.startswith("donate_"):
-            parts = payload.split("_")
-            if len(parts) >= 2:
-                if parts[1] == "custom" and len(parts) >= 3:
-                    stars_amount = int(parts[2])
-                elif parts[1] in STARS_PACKAGES:
-                    stars_amount = STARS_PACKAGES[parts[1]]
-        
-        # Отправляем благодарность пользователю
-        bot.send_message(
-            message.chat.id,
-            f"🎉 **Спасибо за донат!**\n\n"
-            f"Вы успешно отправили {stars_amount} ⭐\n"
-            f"Ваша поддержка очень важна для развития бота!\n\n"
-            f"💫 Спасибо за помощь!",
-            parse_mode="Markdown"
-        )
-        
-        # Уведомляем владельца
-        bot.send_message(
-            OWNER_ID,
-            f"💰 **Новый донат!**\n\n"
-            f"👤 Пользователь: @{message.from_user.username or 'Нет username'}\n"
-            f"🆔 ID: {user_id}\n"
-            f"⭐ Звезд: {stars_amount}\n"
-            f"💳 Сумма: {message.successful_payment.total_amount / 100:.2f} USD",
-            parse_mode="Markdown"
-        )
-        
-    except Exception as e:
-        print(f"Ошибка обработки платежа: {e}")
-
-# ============= ОБНОВЛЕННЫЙ СТАРТ =============
+# ============= ИСПРАВЛЕННЫЙ СТАРТ =============
 
 @bot.message_handler(commands=['start'])
 def start(message):
@@ -262,8 +80,7 @@ def start(message):
             markup = InlineKeyboardMarkup()
             markup.add(
                 InlineKeyboardButton("📢 Канал", url=f"https://t.me/{CHANNEL.replace('@', '')}"),
-                InlineKeyboardButton("🤝 Партнёр", url="https://t.me/loriscript"),
-                InlineKeyboardButton("🌟 Поддержать", callback_data="donate_menu")
+                InlineKeyboardButton("🤝 Партнёр", url="https://t.me/loriscript")
             )
 
             bot.send_message(message.chat.id, text, reply_markup=markup, parse_mode="Markdown")
@@ -273,7 +90,7 @@ def start(message):
                 f"❌ Скрипт не найден!\n\n"
                 f"🔑 Ключ: `{key}`\n"
                 f"📦 Всего скриптов: {len(SCRIPTS_DATABASE)}\n"
-                f"📋 Ключи: {', '.join(list(SCRIPTS_DATABASE.keys())[:5])}...",
+                f"📋 Ключи: {', '.join(SCRIPTS_DATABASE.keys()[:5])}...",
                 parse_mode="Markdown"
             )
         return
@@ -281,13 +98,6 @@ def start(message):
     # Обычный старт без ключа
     SCRIPTS_DATABASE = load_scripts_dynamic()
 
-    # Создаем меню
-    markup = InlineKeyboardMarkup(row_width=2)
-    markup.add(
-        InlineKeyboardButton("📢 Канал", url=f"https://t.me/{CHANNEL.replace('@', '')}"),
-        InlineKeyboardButton("🌟 Поддержать", callback_data="donate_menu")
-    )
-    
     if message.from_user.id == OWNER_ID:
         total_uses = sum(s.get('uses', 0) for s in SCRIPTS_DATABASE.values())
         bot.send_message(
@@ -297,34 +107,24 @@ def start(message):
             f"• Скриптов в базе: {len(SCRIPTS_DATABASE)}\n"
             f"• Всего скачиваний: {total_uses}\n\n"
             f"Отправь фото (если нужно) и текст в формате:\n\n"
-            f"Название игры\n---\nURL\n---\nОписание через +",
-            reply_markup=markup
+            f"Название игры\n---\nURL\n---\nОписание через +"
         )
     else:
         bot.send_message(
             message.chat.id,
             "👋 Добро пожаловать!\n\n"
             f"📢 Канал: @SaulGoodmanScript\n"
-            f"📦 Доступно скриптов: {len(SCRIPTS_DATABASE)}\n\n"
-            f"🌟 Поддержите развитие бота - ваш донат поможет добавить больше скриптов!",
-            reply_markup=markup
+            f"📦 Доступно скриптов: {len(SCRIPTS_DATABASE)}"
         )
 
-# ============= КНОПКА ДОНАТА В МЕНЮ =============
-
-@bot.callback_query_handler(func=lambda call: call.data == "donate_menu")
-def show_donate_menu(call):
-    """Показывает меню донатов при нажатии на кнопку"""
-    donate_command(call.message)
-    bot.answer_callback_query(call.id)
-
-# ============= ОСТАЛЬНЫЕ ФУНКЦИИ (без изменений) =============
+# ============= ИСПРАВЛЕННАЯ КОМАНДА CHECK =============
 
 @bot.message_handler(commands=['check'])
 def check_key_command(message):
     if message.from_user.id != OWNER_ID:
         return
 
+    # ВСЕГДА загружаем свежие данные
     SCRIPTS_DATABASE = load_scripts_dynamic()
 
     args = message.text.split()
@@ -350,10 +150,11 @@ def check_key_command(message):
             bot.send_message(
                 message.chat.id,
                 f"❌ Ключ `{key}` не найден!\n\n"
-                f"Доступные ключи: {', '.join(list(SCRIPTS_DATABASE.keys())[:10])}...",
+                f"Доступные ключи: {', '.join(SCRIPTS_DATABASE.keys()[:10])}...",
                 parse_mode="Markdown"
             )
     else:
+        # Показать все ключи
         keys_list = "\n".join([f"• `{k}` - {SCRIPTS_DATABASE[k]['game_name']}" for k in SCRIPTS_DATABASE.keys()])
         bot.send_message(
             message.chat.id,
@@ -361,12 +162,13 @@ def check_key_command(message):
             parse_mode="Markdown"
         )
 
-# ============= ДОБАВЛЕНИЕ СКРИПТОВ =============
+# ============= ДОБАВЛЕНИЕ СКРИПТОВ (исправлено) =============
 
 temp_data = {}
 
 def generate_unique_key(game_name):
     """Генерирует уникальный ключ"""
+    # Загружаем текущую базу
     SCRIPTS_DATABASE = load_scripts_dynamic()
 
     for attempt in range(10):
@@ -376,6 +178,7 @@ def generate_unique_key(game_name):
         if key not in SCRIPTS_DATABASE:
             return key
 
+    # Fallback
     return hashlib.md5(f"{game_name}{time.time()}{random.random()}".encode()).hexdigest()[:8].upper()
 
 @bot.message_handler(content_types=['photo'])
@@ -395,7 +198,9 @@ def handle_text(message):
     if message.from_user.id != OWNER_ID:
         return
 
+    # Загружаем актуальную базу
     SCRIPTS_DATABASE = load_scripts_dynamic()
+
     user_id = str(message.from_user.id)
 
     if message.text.startswith('/'):
@@ -414,6 +219,7 @@ def handle_text(message):
         bot.send_message(message.chat.id, "❌ Неверный URL")
         return
 
+    # Генерируем ключ с проверкой в ТЕКУЩЕЙ базе
     key = generate_unique_key(game_name)
     loadstring = f'loadstring(game:HttpGet("{url}"))()'
 
@@ -461,8 +267,10 @@ def publish_script(call):
     data = temp_data[user_id]
     key = data['key']
 
+    # Загружаем текущую базу
     SCRIPTS_DATABASE = load_scripts_dynamic()
 
+    # Добавляем в базу
     SCRIPTS_DATABASE[key] = {
         'game_name': data['game_name'],
         'url': data['url'],
@@ -472,8 +280,10 @@ def publish_script(call):
         'uses': 0
     }
 
+    # Сохраняем в JSON
     save_scripts_dynamic(SCRIPTS_DATABASE)
 
+    # Публикуем в канал
     post_text = f"📌 {data['game_name']} SCRIPT!\n{data['description']}\n\n"
     post_text += f"⚡️Гайд как скачать\n@saulGoodmanScript_Guides\n\n"
     post_text += f"🤖Получить ключ от Delta\nhttps://keybypass.net/ \n\n"
@@ -499,6 +309,7 @@ def publish_script(call):
             parse_mode="Markdown"
         )
 
+        # Очищаем временные данные
         if user_id in temp_data:
             del temp_data[user_id]
 
@@ -511,7 +322,6 @@ def publish_script(call):
 
 print("=" * 50)
 print("🤖 Бот запущен на Bothost!")
-print("⭐ Система донатов активирована")
 print("=" * 50)
 
 try:
